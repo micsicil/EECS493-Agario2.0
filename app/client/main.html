@@ -1,0 +1,70 @@
+<head>
+	<title>EECS493 Agario2.0</title>
+	<link href='https://fonts.googleapis.com/css?family=Titillium Web' rel='stylesheet'>
+</head>
+
+<body>
+	{{> main}}
+</body>
+
+<template name="main">
+	{{#if getCurrentUser}}
+		{{> game}}
+	{{else}}
+		{{> login}}
+	{{/if}}
+</template>
+
+<template name="login">
+	<div id="topper">
+		<div id="left">
+			<h1 id="welcome">welcome</h1>
+		</div>
+		<div id="right">
+			<form id="login-user">
+				<input type="text" name="loginUser" placeholder="username" id="enterUsername" autocomplete="off">
+				<input type="submit" value="" id="submitLogin">
+			</form>
+		</div>
+		<p class="instruction" id="ins-one">press [enter]</p>
+		<div class="error" id="login-error">
+			{{ getLoginError }}
+		</div>
+	</div>
+	<div>
+		<div class="section"></div>
+		<div id="center" class="section">
+			<p id="new-user">new user?</p>
+			<form id="signup-user">
+				<input type="text" name="signupUser" placeholder="new username" id="enter-new-username" autocomplete="off">
+				<input type="submit" value="Sign up" id="new-user-submit">
+			</form>
+		</div>
+		<div class="section"></div>
+		<p class="instruction" id="ins-two">press [enter]</p>
+		<div class="error" id="signup-error">
+			{{ getSignupError }}
+		</div>
+	</div>
+</template>
+
+<template name="game">
+	<h1 id="hello">welcome {{ getCurrentUser }}!</h1>
+	<button id="logout">log out</button>
+	<div id="padding"></div>
+	<div id="sidebar-wrapper">
+		<div id="scores">
+			<p>high score: {{ getHighScore }}</p>
+			<p>current score: {{ getCurrScore }}</p>
+			<p>all time high scores:</p>
+				{{#each getTopScores}}
+					<p>{{ username }} - {{ highScore }}</p>
+				{{/each}}
+		</div>
+		<br>
+		<div id="keys">
+			<p id="help-btn">need help?</p>
+		</div>
+	</div>
+	<div id="game-board"></div>
+</template>

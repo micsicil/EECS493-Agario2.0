@@ -1,0 +1,180 @@
+html, body {
+	font-family: 'Titillium Web', Arial, sans-serif;
+	background-color: #3e3c49;
+	height: 100%;
+	width: 100%;
+}
+
+.error {
+	color: #e4e3e8;
+	text-align: center;
+	font-size: 20px;
+	font-family: 'Titillium Web', Arial, sans-serif;
+}
+
+#welcome {
+	color: white;
+	font-size: 40px;
+	text-align: right;
+	padding-right: 8px;
+}
+
+#login-error {
+	display: none;
+}
+
+#signup-error {
+	display: none;
+}
+
+#topper {
+	height: 30%;
+	margin-top: 150px;
+}
+
+#left, #right {
+	height: 70%;
+	width: 49%;
+	float: left;
+}
+
+#enterUsername::placeholder, #enter-new-username::placeholder {
+	color: #6b677e;
+}
+
+#enterUsername, #enter-new-username {
+	background: transparent;
+	border: none;
+	font-size: 40px;
+	outline: none;
+	color: white;
+	font-family: 'Titillium Web', Arial, sans-serif;
+}
+
+#enterUsername {
+	padding-left: 8px;
+	padding-top: 28px;
+}
+
+.section {
+	width: 32.5%;
+	height: 10px;
+	float:left;
+}
+
+#enter-new-username {
+	margin-left: 7%;
+	text-align: center;
+}
+
+.instruction {
+	visibility: hidden;
+	display: block;
+	margin: 0 auto;
+	text-align: center;
+	font-size: 20px;
+	color: #6b677e;
+}
+
+#ins-one {
+	margin-bottom: 10px;
+}
+
+#submitLogin, #new-user-submit, #enter-new-username {
+	visibility: hidden;
+}
+
+#new-user {
+	text-align: center;
+	font-size: 40px;
+	color: #6b677e;
+	height: 40px;
+	line-height: 40px;
+}
+
+#new-user:hover {
+	cursor: default;
+	color: white;
+}
+
+#hello {
+	color: white;
+	font-size: 40px;
+	padding-left: 20px;
+}
+
+#logout {
+	position: fixed;
+	right: 2%;
+	top: 20px;
+    background-color: #6b677e;
+	font-family: 'Titillium Web', Arial, sans-serif;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+}
+
+#sidebar-wrapper {
+	width: 20%;
+	float: left;
+}
+
+#scores {
+	border-style: solid;
+	margin-top: 10px;
+	border-color: #928fa3;
+	border-width: 1px;
+}
+
+#scores, #leader-board, #keys {
+	width: 100%;
+	text-align: center;
+	color: #928fa3;
+	font-size: 18px;
+	float: left;
+}
+
+#keys {
+	border-style: solid;
+	border-color: #928fa3;
+	border-width: 1px;
+	margin-top: 20px;
+}
+
+#help-btn:hover {
+	color: white;
+}
+
+#game-board {
+	height: 500px;
+	width: 900px;
+	padding: 10px;
+	margin: 10px;
+	background-color: black;
+	float: left;
+	display: flex;
+}
+
+#restart-btn {
+	top: 50%;
+	font-size: 32px;
+}
+
+#gameover-text {
+	top: 40%;
+	font-size: 48px;
+}
+
+#gameover-text, #restart-btn {
+	position: absolute; /*To overlay over game-board*/
+	font-family: 'Titillium Web', Arial, sans-serif;
+    border: none;
+    color: white;
+	width: 900px;
+	text-align: center;
+	z-index: 265;
+}
