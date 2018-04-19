@@ -488,7 +488,7 @@ function enemyCollision( enemy )
             resizeMap();
 
         // Recreate player
-        Vector3 pos = player.position;
+        var pos = player.position;
         scene.remove(player);
         playerRadius = playerRadius + 0.5;
         playerInit(pos.x, playerRadius, pos.z);
