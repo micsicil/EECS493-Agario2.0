@@ -23,7 +23,7 @@ var instance, session, meteor;
 var render, renderer, scene, camera, player, ground, grid;
 var walls = [];
 var gravity = -100;
-var groundDimension = GROUND_DIMENSION, groundFactor = 1.1;
+var groundDimension = GROUND_DIMENSION, groundFactor = 1.05;
 
 // State variables
 var gamePaused = false;
@@ -148,10 +148,12 @@ var gameWon = function()
         id: "gameover-text",
     });
 
-    var $btn = $('<button/>', {
+    var $btn = $('<text/>', {
         text: "Play again", //set text 1 to 10
         id: "restart-btn",
-        click: function () { restartGame(); }
+        click: function () { restartGame(); },
+        hover: function() { $("#restart-btn").css("textDecoration", "underline"); },
+        mouseleave: function() { $("#restart-btn").css("textDecoration", "none");}
     });
 
     $("#game-board").prepend($btn);
@@ -486,9 +488,10 @@ function enemyCollision( enemy )
             resizeMap();
 
         // Recreate player
+        Vector3 pos = player.position;
         scene.remove(player);
         playerRadius = playerRadius + 0.5;
-        playerInit(enemy.position.x, playerRadius, enemy.position.z);
+        playerInit(pos.x, playerRadius, pos.z);
         
         // Regenerate enemies
         numSmallerEnemies = 0;
