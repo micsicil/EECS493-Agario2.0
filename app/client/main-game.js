@@ -26,7 +26,6 @@ var gravity = -100;
 var groundDimension = GROUND_DIMENSION, groundFactor = 1.05;
 
 // State variables
-var gamePaused = false;
 var gameDisabled = false;
 var endGame;
 var NUM_ENEMIES = 10;
@@ -34,7 +33,7 @@ var NUM_ENEMIES = 10;
 // Player variables
 var playerMass = PLAYER_MASS, playerRadius = PLAYER_RADIUS;
 var pressedKey = {};
-var W = 87, A = 65, S = 83, D = 68, PAUSE = 80, SPACE = 32;
+var W = 87, A = 65, S = 83, D = 68, SPACE = 32;
 
 // Enemy variables
 var numBiggerEnemies = 0;
@@ -94,7 +93,7 @@ var render = function()
     cameraFollow();
     updateTracking();
 
-    if (gamePaused == true || gameDisabled == true) { return; }
+    if (gameDisabled == true) { return; }
 
     requestAnimationFrame(render);
 };
@@ -134,22 +133,25 @@ var restartGame = function()
     playerInit(0, playerRadius, 0);
     cameraInit();
     generateMap();
-    enemiesInit(8);
+    enemiesInit(NUM_ENEMIES);
     requestAnimationFrame(render);
 };
 
 // Creates the game won text and restart button.
 var gameWon = function()
 {
+    if (gameDisabled)
+        return;
+
     gameDisabled = true;
 
     var $text = $('<text/>', {
-        text: "Congratulations, you win!", //set text 1 to 10
+        text: "Congratulations, you win!",
         id: "gameover-text",
     });
 
     var $btn = $('<text/>', {
-        text: "Play again", //set text 1 to 10
+        text: "Play again",
         id: "restart-btn",
         click: function () { restartGame(); },
         hover: function() { $("#restart-btn").css("textDecoration", "underline"); },
@@ -163,15 +165,18 @@ var gameWon = function()
 // Creates the gameover text and restart button.
 var gameOver = function()
 {
+    if (gameDisabled)
+        return;
+
     gameDisabled = true;
 
     var $text = $('<text/>', {
-        text: "Game over!", //set text 1 to 10
+        text: "Game over!",
         id: "gameover-text",
     });
 
     var $btn = $('<text/>', {
-        text: "Play again", //set text 1 to 10
+        text: "Play again",
         id: "restart-btn",
         click: function () { restartGame(); },
         hover: function() { $("#restart-btn").css("textDecoration", "underline"); },
@@ -200,7 +205,7 @@ var generateGround = function()
 {
     var friction = 0.1;
     var restitution = 0; // "squashyness" / "bouncyness"
-    var height = 1;
+    var height = 100;
     var divisions = groundDimension / (groundFactor * 10); // Grid variables
 
     var ground_material = Physijs.createMaterial(
@@ -242,15 +247,15 @@ var generateWalls = function()
 // Creates horizontal slab for the ceiling
 var createCeiling = function(material, width, depth, xLoc, zLoc)
 {
-    var height = 10;
-    var yLoc = playerRadius*15;
+    var height = 100;
+    var yLoc = playerRadius*20 + height/2;
     createBoundary(material, width, height, depth, xLoc, yLoc, zLoc);
 };
 
 // Creates vertical slab for the floor
 var createWall = function(material, width, depth, xLoc, zLoc)
 {
-    var height = playerRadius*15;
+    var height = playerRadius*20;
     var yLoc = height/2;
     createBoundary(material, width, height, depth, xLoc, yLoc, zLoc);
 };
@@ -363,34 +368,29 @@ function controlPlayer(event)
     // Sets pressedKey[keycode] = false when the key is no longer pressed (keyup)
     pressedKey[event.which] = (event.type == 'keydown');
 
-    if (pressedKey[PAUSE])
-    {
-        gamePaused = !gamePaused;
-        if (gamePaused == false) { requestAnimationFrame(render); }
-    }
-
     // Jumping movement + WASD directional pad movement
 
     var yVelocity = player.getLinearVelocity().y;
+    force = force.add(new THREE.Vector3(0, yVelocity, 0));
     if (pressedKey[W])
     {
-        force = force.add(new THREE.Vector3(0, yVelocity, -fMagnitude));
+        force = force.add(new THREE.Vector3(0, 0, -fMagnitude));
     }
     if (pressedKey[S])
     {
-        force = force.add(new THREE.Vector3(0, yVelocity, fMagnitude));
+        force = force.add(new THREE.Vector3(0, 0, fMagnitude));
     }
     if (pressedKey[A])
     {
-        force = force.add(new THREE.Vector3(-fMagnitude, yVelocity, 0));
+        force = force.add(new THREE.Vector3(-fMagnitude, 0, 0));
     }
     if (pressedKey[D])
     {
-        force = force.add(new THREE.Vector3(fMagnitude, yVelocity, 0));
+        force = force.add(new THREE.Vector3(fMagnitude, 0, 0));
     }
     if (pressedKey[SPACE])
     {
-        force = force.add(new THREE.Vector3(0, jumpMagnitude + yVelocity, 0))
+        force = force.add(new THREE.Vector3(0, jumpMagnitude, 0))
     }
 
     player.setLinearVelocity(force);
@@ -489,10 +489,12 @@ function enemyCollision( enemy )
 
         // Recreate player
         var pos = player.position;
+        var velocity = player.getLinearVelocity();
         scene.remove(player);
         playerRadius = playerRadius + 0.5;
         playerInit(pos.x, playerRadius, pos.z);
-        
+        player.setLinearVelocity(velocity);
+
         // Regenerate enemies
         numSmallerEnemies = 0;
         numBiggerEnemies = 0;
