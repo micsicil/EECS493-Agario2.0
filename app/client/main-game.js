@@ -128,6 +128,7 @@ var restartGame = function()
     groundDimension = GROUND_DIMENSION;
     numBiggerEnemies = 0;
     numSmallerEnemies = 0;
+    startTime = Date.now();
 
     resetKeys();
     playerInit(0, playerRadius, 0);
