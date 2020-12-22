@@ -20,7 +20,7 @@ var SCREEN_HEIGHT = 500;
 var instance, session, meteor;
 
 // Scene variables
-var render, renderer, scene, camera, player, cameraAnchor, ground, grid;
+var render, renderer, scene, camera, player, ground, grid;
 var walls = [];
 var gravity = -100;
 var groundDimension = GROUND_DIMENSION, groundFactor = 1.05;
@@ -89,8 +89,8 @@ var initScene = function()
 var render = function()
 {
     scene.simulate(); // run physics
-    renderer.render( scene, camera); // render the scene
     cameraFollow();
+    renderer.render( scene, camera); // render the scene
     updateTracking();
 
     if (gameDisabled == true) { return; }
@@ -307,11 +307,14 @@ var cameraInit = function()
 // Directs the camera to look at the player.
 var cameraFollow = function()
 {
-    var temp = new THREE.Vector3;
-    temp.setFromMatrixPosition(cameraAnchor.matrixWorld);
-    
-    camera.position.lerp(temp, 0.2);
-    camera.lookAt( player.position );
+    var cameraTarget = player.position;
+    var cameraOffset = new THREE.Vector3(0, playerRadius * 10, playerRadius * 10);
+
+    camera.position.x = cameraOffset.x + cameraTarget.x;
+    camera.position.y = cameraOffset.y + cameraTarget.y;
+    camera.position.z = cameraOffset.z + cameraTarget.z;
+
+    camera.lookAt( cameraTarget );
 };
 
 /*************************************************************/
@@ -343,11 +346,6 @@ var playerInit = function(x, y, z)
     player.setDamping(linearDamping, angularDamping);
 
     player.position.set(x, y, z);
-    
-    // Add anchor for camera
-    cameraAnchor = new THREE.Object3D;
-    player.add ( cameraAnchor );
-    goal.position.set( 0, groundDimension + playerRadius * 2, groundDimension);
 
     scene.add( player );
 };
