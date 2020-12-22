@@ -88,10 +88,10 @@ var initScene = function()
 // Simulates the game.
 var render = function()
 {
+    updateTracking(); // apply forces to enemies
     scene.simulate(); // run physics
-    cameraFollow();
+    cameraFollow(); // update camera position relative to player
     renderer.render( scene, camera); // render the scene
-    updateTracking();
 
     if (gameDisabled == true) { return; }
 
