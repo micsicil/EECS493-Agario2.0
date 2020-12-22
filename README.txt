@@ -14,4 +14,4 @@ Instructions for running the app locally after setup:
 3. Navigate to http://localhost:3000/
 
 Access deployed version at:
-https://agario493.herokuapp.com
+https://agar2-0.herokuapp.com
