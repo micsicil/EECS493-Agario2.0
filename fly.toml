@@ -10,8 +10,7 @@ auto_rollback = true
 app = ".meteor/heroku_build/bin/node $NODEJS_PARAMS .meteor/heroku_build/app/main.js"
 
 [build]
-  builder = "paketobuildpacks/builder:base"
-  buildpacks = ["gcr.io/paketo-buildpacks/nodejs"]
+  builder = "heroku/buildpacks:20"
 
 
 [[services]]
