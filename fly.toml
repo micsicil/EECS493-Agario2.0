@@ -1,6 +1,9 @@
 app = 'agar2-0'
 primary_region = 'ord'
 
+[experimental]
+auto_rollback = true
+
 [http_service]
   internal_port = 8080
   force_https = true
@@ -10,7 +13,7 @@ primary_region = 'ord'
   processes = ['app']
 
 [processes]
-app = ".meteor/heroku_build/bin/node $NODEJS_PARAMS .meteor/heroku_build/app/main.js"
+app = "meteor"
 
 [build]
   builder = "paketobuildpacks/builder:base"
