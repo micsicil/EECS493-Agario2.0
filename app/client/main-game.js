@@ -1,5 +1,5 @@
-import THREE from 'three';
 const NodePhysijs = require('nodejs-physijs');
+const THREE = NodePhysijs.THREE;
 const Ammo = NodePhysijs.Ammo;
 const Physijs = NodePhysijs.Physijs(THREE, Ammo);
 
@@ -33,7 +33,7 @@ var NUM_ENEMIES = 10;
 // Player variables
 var playerMass = PLAYER_MASS, playerRadius = PLAYER_RADIUS;
 var pressedKey = {};
-var W = 87, A = 65, S = 83, D = 68, SPACE = 32;
+var W = 87, A = 65, S = 83, D = 68, SPACE = 32, SHIFT = 16;
 
 // Enemy variables
 var numBiggerEnemies = 0;
@@ -110,8 +110,8 @@ var endGame = function()
 // Reloads all essential functions
 var restartGame = function()
 {
-    while(scene.children.length > 0){ 
-        scene.remove(scene.children[0]); 
+    while(scene.children.length > 0){
+        scene.remove(scene.children[0]);
     }
     enemies = [];
     walls = [];
@@ -214,12 +214,12 @@ var generateGround = function()
         friction,
         restitution
     );
-  
+
     ground = new Physijs.BoxMesh(new THREE.CubeGeometry( groundDimension, height, groundDimension ), ground_material, 0);
     ground.position.set(0, -height/2, 0);
     scene.add( ground );
 
-    grid = new THREE.GridHelper(groundDimension, divisions);
+    grid = new THREE.GridHelper(groundDimension / 2, groundFactor * 10);
     scene.add( grid );
 };
 
@@ -294,7 +294,7 @@ var resizeMap = function()
 var cameraInit = function()
 {
     camera = new THREE.PerspectiveCamera(
-        35, 
+        35,
         SCREEN_WIDTH / SCREEN_HEIGHT,
         1, // Near clipping plane
         10000 // Far clipping plane
@@ -393,6 +393,10 @@ function controlPlayer(event)
     {
         force = force.add(new THREE.Vector3(0, jumpMagnitude, 0))
     }
+    if (pressedKey[SHIFT])
+    {
+        force = force.add(new THREE.Vector3(0, -jumpMagnitude, 0))
+    }
 
     player.setLinearVelocity(force);
     player.setAngularVelocity(force);
@@ -455,7 +459,7 @@ function updateTracking() {
 function enemyCollision( enemy )
 {
     // Ignore ground and wall collision
-    if (enemy.geometry.type != 'BoxGeometry')
+    if (enemy.geometry instanceof THREE.SphereGeometry)
     {
         // Player ate the final enemy! :)
         if (enemies.length == 1) {
@@ -553,7 +557,7 @@ function spawnEnemy (radius) {
         material,
         enemyMass
     );
-    
+
     enemy.setDamping(linearDamping, angularDamping);
 
     try {

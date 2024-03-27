@@ -175,6 +175,6 @@ Template.game.events({
         Session.set('currentUser', '');
     },
 	'click #help-btn': function() {
-        $("#keys").html("<p>w - forward</p><p>a - left</p><p>s - back</p><p>d - right</p><p>space - jump</p>");
+        $("#keys").html("<p>w - forward</p><p>a - left</p><p>s - back</p><p>d - right</p><p>space - jump</p><p>shift - slam</p>");
 	},
 });
